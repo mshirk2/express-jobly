@@ -96,6 +96,64 @@ describe("GET /companies", function () {
     });
   });
 
+  test("works: one filter", async () =>{
+    const resp = await request(app)
+      .get("/companies")
+      .query({ name: "1" });
+    expect(resp.body).toEqual({
+      companies: [
+        {
+          handle: "c1",
+          name: "C1",
+          description: "Desc1",
+          numEmployees: 1,
+          logoUrl: "http://c1.img",
+        },
+      ],
+    });
+  });
+
+  test("works: all filters", async () =>{
+    const resp = await request(app)
+      .get("/companies")
+      .query({ name: "1", minEmployees: 1, maxEmployees: 1 });
+    expect(resp.body).toEqual({
+      companies: [
+        {
+          handle: "c1",
+          name: "C1",
+          description: "Desc1",
+          numEmployees: 1,
+          logoUrl: "http://c1.img",
+        },
+      ],
+    });
+  });
+
+  test("works: converts querystring to int", async () =>{
+    const resp = await request(app)
+      .get("/companies")
+      .query({ minEmployees:'2', maxEmployees: '2' });
+    expect(resp.body).toEqual({
+      companies: [
+        {
+          handle: "c2",
+          name: "C2",
+          description: "Desc2",
+          numEmployees: 2,
+          logoUrl: "http://c2.img",
+        },
+      ],
+    });
+  });
+
+  test("fails: throws error if invalid filter key", async () =>{
+    const resp = await request(app)
+      .get('/companies')
+      .query({ name: "1", bad_field: "bad field"});
+    expect(resp.statusCode).toEqual(400);
+  });
+
   test("fails: test next() handler", async function () {
     // there's no normal failure event which will cause this route to fail ---
     // thus making it hard to test that the error-handler works with it. This
