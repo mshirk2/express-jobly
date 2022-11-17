@@ -72,7 +72,6 @@ class Job {
     }
 
     if (hasEquity) {
-      queryValues.push(hasEquity);
       whereExpressions.push(`equity > 0`);
     }
 
@@ -80,7 +79,7 @@ class Job {
       query += " WHERE " + whereExpressions.join(" AND ");
     }
 
-    query += " ORDER BY name ";
+    query += " ORDER BY title ";
     const jobsRes = await db.query(query, queryValues);
     return jobsRes.rows;
   }
@@ -131,7 +130,8 @@ class Job {
     const querySql = `UPDATE jobs 
                       SET ${setCols} 
                       WHERE id = ${idVarIdx} 
-                      RETURNING title, 
+                      RETURNING id,
+                                title, 
                                 salary, 
                                 equity,
                                 company_handle AS "companyHandle"`;
