@@ -45,7 +45,7 @@ class Job {
    * searchFilters (optional):
    * - title (finds case-insensitive, partial matches)
    * - minSalary
-   * - hasEquity
+   * - hasEquity (boolean, if true, must be a numeric < 1.0)
    *
    * Returns [{ title, salary, equity, company_handle }, ...]
    * */
