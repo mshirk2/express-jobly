@@ -15,7 +15,7 @@ class Job {
    *
    * */
 
-  static async create({ title, salary, equity, company_handle }) {
+  static async create(data) {
     const result = await db.query(
         `INSERT INTO jobs (
             title, 
@@ -29,10 +29,10 @@ class Job {
                     equity, 
                     company_handle AS "companyHandle"`,
         [
-          title,
-          salary,
-          equity,
-          company_handle,
+          data.title,
+          data.salary,
+          data.equity,
+          data.companyHandle,
         ],
     );
     const job = result.rows[0];
