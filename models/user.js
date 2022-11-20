@@ -117,8 +117,8 @@ class User {
 
   /** Given a username, return data about user.
    *
-   * Returns { username, first_name, last_name, is_admin, jobs }
-   *   where jobs is { id, title, company_handle, company_name, state }
+   * Returns { username, first_name, last_name, is_admin, applications }
+   *   where applications is [ job_id, job_id ]
    *
    * Throws NotFoundError if user not found.
    **/
@@ -138,6 +138,14 @@ class User {
     const user = userRes.rows[0];
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
+
+    const userApplications = await db.query(
+      `SELECT a.job_id
+      FROM applications a
+      WHERE a.username = $1`,
+      [username]);
+
+    user.applications = userApplications.rows.map(a => a. job_id)
 
     return user;
   }
@@ -204,7 +212,27 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
   }
-}
 
+
+  static async applyToJob(username, jobId){
+    const validateUsername = await db.query(
+      `SELECT username
+      FROM users
+      WHERE username = $1`, [username]);
+    
+    if (!validateUsername.rows[0]) throw new NotFoundError(`Username not found ${username}`);
+
+    const validateJob = await db.query(
+      `SELECT id
+      FROM jobs
+      WHERE id = $1`, [jobId]);
+    
+    if (!validateJob.rows[0]) throw new NotFoundError(`Job not found: ${jobId}`);
+
+    await db.query(
+      `INSERT INTO applications (username, job_id)
+      VALUES ($1, $2)`, [username, jobId]);
+  }
+}
 
 module.exports = User;

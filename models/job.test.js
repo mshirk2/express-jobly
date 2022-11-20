@@ -66,6 +66,7 @@ describe("findAll", function (){
                 salary: 10000,
                 equity: '0',
                 companyHandle: 'c1',
+                companyName: 'C1',
             },
             {
                 id: testJobIds[1],
@@ -73,13 +74,15 @@ describe("findAll", function (){
                 salary: 20000,
                 equity: "0.2",
                 companyHandle: 'c2',
+                companyName: 'C2',
             },
             {
                 id: testJobIds[2],
                 title: "j3",
                 salary: 30000,
                 equity: "0.3",
-                companyHandle: 'c3',
+                companyHandle: 'c2',
+                companyName: 'C2',
             },
         ]);
     });
@@ -93,6 +96,7 @@ describe("findAll", function (){
                 salary: 10000,
                 equity: "0",
                 companyHandle: 'c1',
+                companyName: 'C1',
             },
         ]);
     });
@@ -105,7 +109,8 @@ describe("findAll", function (){
                 title: "j3",
                 salary: 30000,
                 equity: "0.3",
-                companyHandle: 'c3',
+                companyHandle: 'c2',
+                companyName: 'C2',
             },
         ]);
     });
@@ -119,13 +124,15 @@ describe("findAll", function (){
                 salary: 20000,
                 equity: "0.2",
                 companyHandle: 'c2',
+                companyName: 'C2',
             },
             {
                 id: testJobIds[2],
                 title: "j3",
                 salary: 30000,
                 equity: "0.3",
-                companyHandle: 'c3',
+                companyHandle: 'c2',
+                companyName: 'C2',
             },
         ]);
     });

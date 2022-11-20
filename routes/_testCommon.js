@@ -67,7 +67,7 @@ async function commonBeforeAll() {
   testJobIds[0] = (await Job.create({
     title: "j1",
     salary: 10000,
-    equity: null,
+    equity: 0,
     companyHandle: 'c1',
   })).id;
   testJobIds[1] = (await Job.create({
@@ -80,8 +80,10 @@ async function commonBeforeAll() {
     title: "j3",
     salary: 30000,
     equity: '0.3',
-    companyHandle: 'c3',
+    companyHandle: 'c2',
   })).id;
+
+  await User.applyToJob("u1", testJobIds[0]);
 }
 
 async function commonBeforeEach() {

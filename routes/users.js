@@ -44,8 +44,27 @@ router.post("/", ensureAdmin, async function (req, res, next) {
   }
 });
 
+/** POST /users/:username/jobs/:id  => { applied: jobId }
+ *
+ * Allows users to apply for job or admin to do it for them
+ *
+ * Returns: { applied: jobId }
+ *
+ * Authorization required: admin or same user as ":username"
+ **/
 
-/** GET / => { users: [ {username, firstName, lastName, email }, ... ] }
+router.post("/:username/jobs/:id", ensureAdminOrSelf, async function(req, res, next){
+  try {
+    const jobId = parseInt(req.params.id);
+    await User.applyToJob(req.params.username, jobId)
+    return res.json({ applied:jobId });
+  } catch (err) {
+    return next(err);
+  }
+})
+
+
+/** GET / => { users: [ {username, firstName, lastName, email, isAdmin }, ... ] }
  *
  * Returns list of all users.
  *
@@ -64,7 +83,7 @@ router.get("/", ensureAdmin, async function (req, res, next) {
 
 /** GET /[username] => { user }
  *
- * Returns { username, firstName, lastName, isAdmin }
+ * Returns { username, firstName, lastName, isAdmin, applications[ jobId ] }
  *
  * Authorization required: admin, or same user as ":username"
  **/
